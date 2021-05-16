@@ -14,6 +14,10 @@ You can press ctrl + s to save.
 
 You can press ctrl + o to open.
 
+You can use ctrl + h to replace certain text.
+
+You can use ctrl + f to change the font style in the textbox.*
+
 Ctrl + c and ctrl + v work just as normal to copy and paste.
 
 
@@ -25,3 +29,5 @@ Christopher's Text Editor.exe is the application version of the code. It only wo
 Email Christopher@Christopher-Hatton.co.uk if you want to contact me.
 
 The help button directs you to Christopher-Hatton.co.uk. This site isn't online yet, but may be in the future.
+
+*Once you have opened the font style window, you can choose either Courier, Helvetica, or Times for the font. You can then choose the font size, and then choose to have bold, italics or normal (leave blank for normal). You would write it in the entry box like this: "Times 30 bold" without the quotation marks.
