@@ -284,6 +284,7 @@ def f_main():
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+
     def f_change_text_style_key(event): #Changes font style of textbox
 
         def f_submit():
@@ -291,6 +292,47 @@ def f_main():
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
+            if text_style.split()[0] == 'Courier' or text_style.split()[0] == 'Helvetica' or text_style.split()[0] == 'Times':
+                f = open('font_type.txt','w')
+                f.write(text_style.split()[0])
+                f.close()
+            f = open('font_size.txt','r')
+            x = f.read()
+            f.close()
+            z = 0
+            f = open('font_size.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[1])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_size.txt','w')
+                f.write(x)
+                f.close()
+                z = z - 1
+            f = open('font_size.txt','r')
+            y = f.read()
+            f.close()
+            f = open('font_style.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[2])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_style.txt','w')
+                f.write(y)
+                f.close()
+                z = z - 1
 
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
