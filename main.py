@@ -38,6 +38,10 @@ def f_main():
     f = open('font_type.txt','r')
     font_type = f.read()
     f.close()
+    f = open('font_style.txt','r')
+    font_style = f.read()
+    f.close()
+    font_style_all = font_type + ' ' + font_size + ' ' + font_style
 
     def f_open_file(): #Open files:
         file_location = ''
@@ -230,6 +234,47 @@ def f_main():
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
+            if text_style.split()[0] == 'Courier' or text_style.split()[0] == 'Helvetica' or text_style.split()[0] == 'Times':
+                f = open('font_type.txt','w')
+                f.write(text_style.split()[0])
+                f.close()
+            f = open('font_size.txt','r')
+            x = f.read()
+            f.close()
+            z = 0
+            f = open('font_size.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[1])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_size.txt','w')
+                f.write(x)
+                f.close()
+                z = z - 1
+            f = open('font_size.txt','r')
+            y = f.read()
+            f.close()
+            f = open('font_style.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[2])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_style.txt','w')
+                f.write(y)
+                f.close()
+                z = z - 1
 
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
@@ -239,7 +284,6 @@ def f_main():
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
-
     def f_change_text_style_key(event): #Changes font style of textbox
 
         def f_submit():
@@ -283,6 +327,9 @@ def f_main():
     help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
 
+    #Configure textbox:
+    textbox.configure(font = font_style_all)
+
     #Arrange Tk:
     heading.grid(row = 0,column = 0,sticky = 'nsew')
     frame_buttons.grid(row = 1,column = 0)
@@ -302,25 +349,25 @@ def small_monitor(): #displays error message for small screen
     root = Tk()
     warning_label = Label(text = 'Your screen is too small')
     warning_label.grid(row = 0,column = 0)
-    root.mainloop
+    root.mainloop()
 
 def f_linux(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = 'Email Christopher@Christopher-Hatton.co.uk for the Linux version')
     warning_label.grid(row = 0,column = 0)
-    root.mainloop  
+    root.mainloop()  
 
 def f_mac(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = 'Email Christopher@Christopher-Hatton.co.uk for the Mac version')
     warning_label.grid(row = 0,column = 0)
-    root.mainloop  
+    root.mainloop()  
 
 def f_unknown_os(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = name + ' is not available for your operating system.')
     warning_label.grid(row = 0,column = 0)
-    root.mainloop      
+    root.mainloop()      
 
 def run(): #if screen size big enough, run
     user32 = ctypes.windll.user32
