@@ -250,6 +250,39 @@ def f_main():
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
 
+    def f_change_text_colour():
+
+        def f_submit():
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            time.sleep(0.5)
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        text_colour_label = Label(popup, text = 'Enter text colour here:')
+        text_colour_entry = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        text_colour_label.grid(row = 0,column = 0)
+        text_colour_entry.grid(row = 1,column = 0,padx = 5)
+        submit.grid(row = 2,column = 0)
+
+    def f_change_text_colour_key(event):
+
+        def f_submit():
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        text_colour_label = Label(popup, text = 'Enter text colour here:')
+        text_colour_entry = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        text_colour_label.grid(row = 0,column = 0)
+        text_colour_entry.grid(row = 1,column = 0,padx = 5)
+        submit.grid(row = 2,column = 0)
 
     def f_help():
         os.system("start \"\" http:\\christopher-hatton.co.uk")
@@ -272,6 +305,8 @@ def f_main():
     replace_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     change_text_style = Button(frame_buttons,text = 'Change Text Style',command=lambda : f_change_text_style(),bg = 'gray',fg = 'white')
     change_text_style.pack(side=tk.LEFT,padx=(3),pady=(3))
+    change_text_colour = Button(frame_buttons,text = 'Change Text Colour',command=lambda : f_change_text_colour(),bg = 'gray',fg = 'white')
+    change_text_colour.pack(side=tk.LEFT,padx=(3),pady=(3))
     help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
     help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
@@ -288,6 +323,7 @@ def f_main():
     root.bind('<F12>', f_save_as_key)
     root.bind('<Control-h>', f_replace_key)
     root.bind('<Control-f>', f_change_text_style_key)
+    root.bind('<Control-b>', f_change_text_colour_key)
 
     root.mainloop()
      
