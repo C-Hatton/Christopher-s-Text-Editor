@@ -42,6 +42,9 @@ def f_main():
     font_style = f.read()
     f.close()
     font_style_all = font_type + ' ' + font_size + ' ' + font_style
+    f = open('text_colour.txt','r')
+    text_colour = f.read()
+    f.close()
 
     def f_open_file(): #Open files:
         file_location = ''
@@ -315,7 +318,7 @@ def f_main():
                 f.write(x)
                 f.close()
                 z = z - 1
-            f = open('font_size.txt','r')
+            f = open('font_style.txt','r')
             y = f.read()
             f.close()
             f = open('font_style.txt','w')
@@ -343,6 +346,49 @@ def f_main():
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
 
+    def f_change_text_colour():
+
+        def f_submit():
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            time.sleep(0.5)
+            popup.destroy()
+            if not colour:
+                raise SystemExit
+            else:
+                f = open('text_colour.txt','w')
+                f.write(colour)
+                f.close()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        text_colour_label = Label(popup, text = 'Enter text colour here:')
+        text_colour_entry = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        text_colour_label.grid(row = 0,column = 0)
+        text_colour_entry.grid(row = 1,column = 0,padx = 5)
+        submit.grid(row = 2,column = 0)
+
+    def f_change_text_colour_key(event):
+
+        def f_submit():
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            if colour != '':
+                f = open('text_colour.txt','w')
+                f.write(colour)
+                f.close()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        text_colour_label = Label(popup, text = 'Enter text colour here:')
+        text_colour_entry = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        text_colour_label.grid(row = 0,column = 0)
+        text_colour_entry.grid(row = 1,column = 0,padx = 5)
+        submit.grid(row = 2,column = 0)
 
     def f_help():
         os.system("start \"\" http:\\christopher-hatton.co.uk")
@@ -365,12 +411,14 @@ def f_main():
     replace_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     change_text_style = Button(frame_buttons,text = 'Change Text Style',command=lambda : f_change_text_style(),bg = 'gray',fg = 'white')
     change_text_style.pack(side=tk.LEFT,padx=(3),pady=(3))
+    change_text_colour = Button(frame_buttons,text = 'Change Text Colour',command=lambda : f_change_text_colour(),bg = 'gray',fg = 'white')
+    change_text_colour.pack(side=tk.LEFT,padx=(3),pady=(3))
     help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
     help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
 
     #Configure textbox:
-    textbox.configure(font = font_style_all)
+    textbox.configure(font = font_style_all,fg = text_colour)
 
     #Arrange Tk:
     heading.grid(row = 0,column = 0,sticky = 'nsew')
@@ -384,6 +432,7 @@ def f_main():
     root.bind('<F12>', f_save_as_key)
     root.bind('<Control-h>', f_replace_key)
     root.bind('<Control-f>', f_change_text_style_key)
+    root.bind('<Control-b>', f_change_text_colour_key)
 
     root.mainloop()
      
