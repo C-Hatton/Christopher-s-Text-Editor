@@ -16,13 +16,13 @@ def f_main():
 
     #START:
     root = tk.Tk()
-
-    root.state('zoomed')
-    root.bind("<F11>", lambda event: root.attributes("-fullscreen",not root.attributes("-fullscreen")))
-    root.bind("<Escape>", lambda event: root.attributes("-fullscreen", False))
-    root.bind('<F10>', lambda event: root.state('zoomed'))
-    root.bind('<F9>', lambda event: root.destroy)
-    root.title(name) #Sets the title of the window
+                            
+    root.iconphoto(False, tk.PhotoImage(file='logo.ico'))                                                 #Changes icon
+    root.state('zoomed')                                                                                  #Sets default state to zoomed
+    root.bind('<F11>', lambda event: root.attributes('-fullscreen',not root.attributes('-fullscreen')))   #Binds F11 to fullscreen
+    root.bind('<Escape>', lambda event: root.attributes('-fullscreen', False))                            #Binds Escape to leave fullscreen
+    root.bind('<F10>', lambda event: root.state('zoomed'))                                                #Binds F10 to zoomed               
+    root.title(name)                                                                                      #Sets the title of the window
 
     #Make global variables:
     file_location_save = ['']
@@ -176,14 +176,14 @@ def f_main():
     heading = Label(text = name,font = 'Helvetica 30 bold')
     textbox = scrolledtext.ScrolledText(width=40, height=10)
     frame_buttons = tk.Frame(root)
-    open_file = Button(frame_buttons,text = 'Open',command = f_open_file)
-    open_file.pack(side=tk.LEFT,padx=(3))
-    save_file = Button(frame_buttons,text = 'Save',command=lambda : f_save_file())
-    save_file.pack(side=tk.LEFT,padx=(3))
-    save_as = Button(frame_buttons,text = 'Save As',command=lambda : f_save_as())
-    save_as.pack(side=tk.LEFT,padx=(3))
-    help_button = Button(frame_buttons,text = 'Help',command = f_help)
-    help_button.pack(side=tk.LEFT,padx=(3))
+    open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = 'gray',fg = 'white')
+    open_file.pack(side=tk.LEFT,padx=(3),pady=(3))
+    save_file = Button(frame_buttons,text = 'Save',command=lambda : f_save_file(),bg = 'gray',fg = 'white')
+    save_file.pack(side=tk.LEFT,padx=(3),pady=(3))
+    save_as = Button(frame_buttons,text = 'Save As',command=lambda : f_save_as(),bg = 'gray',fg = 'white')
+    save_as.pack(side=tk.LEFT,padx=(3),pady=(3))
+    help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
+    help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     copyright = Label(text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
 
     #Arrange Tk:
@@ -205,19 +205,19 @@ def small_monitor(): #displays error message for small screen
     warning_label.grid(row = 0,column = 0)
     root.mainloop
 
-def f_linux():
+def f_linux(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = 'Email Christopher@Christopher-Hatton.co.uk for the Linux version')
     warning_label.grid(row = 0,column = 0)
     root.mainloop  
 
-def f_mac():
+def f_mac(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = 'Email Christopher@Christopher-Hatton.co.uk for the Mac version')
     warning_label.grid(row = 0,column = 0)
     root.mainloop  
 
-def f_unknown_os():
+def f_unknown_os(): #displays error message for wrong os
     root = Tk()
     warning_label = Label(text = name + ' is not available for your operating system.')
     warning_label.grid(row = 0,column = 0)
