@@ -8,7 +8,9 @@ from tkinter import scrolledtext #to create textbox
 from tkinter import filedialog   #to open and choose documents
 from sys import platform         #to make sure that the os is win32
 import ctypes                    #to make sure that the screen size is large enough
+import time                      #to make better timings
 import os                        #to allow help button open help web page
+
 
 name = "Christopher's Text Editor"
 
@@ -17,11 +19,11 @@ def f_main():
     #START:
     root = tk.Tk()
                             
-    root.iconphoto(False, tk.PhotoImage(file='logo.ico'))                                                 #Changes icon
+    root.iconphoto(True, tk.PhotoImage(file='logo.ico'))                                                  #Changes icon
     root.state('zoomed')                                                                                  #Sets default state to zoomed
     root.bind('<F11>', lambda event: root.attributes('-fullscreen',not root.attributes('-fullscreen')))   #Binds F11 to fullscreen
     root.bind('<Escape>', lambda event: root.attributes('-fullscreen', False))                            #Binds Escape to leave fullscreen
-    root.bind('<F10>', lambda event: root.state('zoomed'))                                                #Binds F10 to zoomed               
+    root.bind('<F10>', lambda event: root.state('zoomed'))                                                #Binds F10 to zoomed    
     root.title(name)                                                                                      #Sets the title of the window
 
     #Make global variables:
@@ -164,6 +166,56 @@ def f_main():
                 file_open_name[0] = x[-1] #Puts it in a global variable
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
+    
+    def f_replace_text(original_text,replace_text): #
+        x = textbox.get("1.0",'end-1c')
+        y = x.replace(original_text, replace_text)
+        textbox.delete("1.0","end")
+        textbox.insert("end-1c",y) #Puts the contents of the file in the textbox
+
+    def f_replace(): #Replace text
+
+        def f_submit():
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
+            time.sleep(0.5)
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Replace Text - ' + name)
+        original_label = Label(popup, text = 'What do you want to replace?')
+        replace_label = Label(popup,text = 'What do you want to replace it with?')
+        original = Entry(popup)
+        replace = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        original_label.grid(row = 0,column = 0)
+        replace_label.grid(row = 0,column = 2)
+        original.grid(row = 1,column = 0)
+        replace.grid(row = 1,column = 2)
+        submit.grid(row = 2,column = 1)
+
+    def f_replace_key(event): #Replace text
+
+        def f_submit():
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
+            time.sleep(0.5)
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Replace Text - ' + name)
+        original_label = Label(popup, text = 'What do you want to replace?')
+        replace_label = Label(popup,text = 'What do you want to replace it with?')
+        original = Entry(popup)
+        replace = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        original_label.grid(row = 0,column = 0)
+        replace_label.grid(row = 0,column = 2)
+        original.grid(row = 1,column = 0)
+        replace.grid(row = 1,column = 2)
+        submit.grid(row = 2,column = 1)
 
     def f_help():
         os.system("start \"\" http:\\christopher-hatton.co.uk")
@@ -173,7 +225,7 @@ def f_main():
     Grid.columnconfigure(root,index = 0,weight = 1)
 
     #Make Tk:
-    heading = Label(text = name,font = 'Helvetica 30 bold')
+    heading = Label(root,text = name,font = 'Helvetica 30 bold')
     textbox = scrolledtext.ScrolledText(width=40, height=10)
     frame_buttons = tk.Frame(root)
     open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = 'gray',fg = 'white')
@@ -182,9 +234,11 @@ def f_main():
     save_file.pack(side=tk.LEFT,padx=(3),pady=(3))
     save_as = Button(frame_buttons,text = 'Save As',command=lambda : f_save_as(),bg = 'gray',fg = 'white')
     save_as.pack(side=tk.LEFT,padx=(3),pady=(3))
+    replace_button = Button(frame_buttons,text = 'Replace Text',command=lambda : f_replace(),bg = 'gray',fg = 'white')
+    replace_button.pack(side=tk.LEFT,padx=(3),pady=(3))
     help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
     help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
-    copyright = Label(text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
+    copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
 
     #Arrange Tk:
     heading.grid(row = 0,column = 0,sticky = 'nsew')
@@ -196,6 +250,7 @@ def f_main():
     root.bind('<Control-s>', f_save_file_key)
     root.bind('<Control-o>', f_open_file_key)
     root.bind('<F12>', f_save_as_key)
+    root.bind('<Control-h>', f_replace_key)
 
     root.mainloop()
      
