@@ -329,7 +329,7 @@ def f_main():
         popup.bind('<Return>',f_submit_key)
 
     def f_help():
-        os.system("start \"\" http:\\christopher-hatton.co.uk")
+        os.system('start \"\" https://github.com/C-Hatton/Christopher-s-Text-Editor')
 
     #Configure grid:
     Grid.rowconfigure(root,index = 2,weight = 4)
