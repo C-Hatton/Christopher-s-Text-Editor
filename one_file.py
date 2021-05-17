@@ -251,7 +251,7 @@ def f_main():
         submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
-        submit.grid(row = 2,column = 0)
+        submit.grid(row = 2,column = 0,pady = 3)
         popup.bind('<Return>',f_submit_key)
 
     def f_change_text_style_key(event): #Changes font style of textbox
@@ -275,7 +275,7 @@ def f_main():
         submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
-        submit.grid(row = 2,column = 0)
+        submit.grid(row = 2,column = 0,pady = 3)
         popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour():
@@ -301,7 +301,7 @@ def f_main():
         submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
-        submit.grid(row = 2,column = 0)
+        submit.grid(row = 2,column = 0,pady = 3)
         popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour_key(event):
@@ -325,7 +325,7 @@ def f_main():
         submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
-        submit.grid(row = 2,column = 0)
+        submit.grid(row = 2,column = 0,pady = 3)
         popup.bind('<Return>',f_submit_key)
 
     def f_help():
