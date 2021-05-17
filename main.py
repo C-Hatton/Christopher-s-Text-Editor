@@ -257,7 +257,7 @@ def f_main():
             f.close()
             if z == 1:
                 f = open('font_size.txt','w')
-                f.write(x)
+                f.write(text_style.split()[1])
                 f.close()
                 z = z - 1
             f = open('font_size.txt','r')
@@ -268,14 +268,14 @@ def f_main():
                 try:
                     f.write(text_style.split()[2])
                 except IndexError:
-                    z = z + 1
                     break
                 else:
+                    z = z + 1
                     break
             f.close()
             if z == 1:
                 f = open('font_style.txt','w')
-                f.write(y)
+                f.write(text_style.split()[2])
                 f.close()
                 z = z - 1
 
