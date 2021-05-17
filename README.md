@@ -24,7 +24,9 @@ Ctrl + c and ctrl + v work just as normal to copy and paste.
 
 
 
-I am working on making the text editor look nicer, and the ability to close the window by pressing F9.
+To run main.py, you need to add four .txt files in the same directory. The text files you need should be called font_size.txt, font_style.txt, font_type.txt and font_colour.txt. The text files need values entered in them for main.py to work. In font_size, enter the size of font you want (a single number). In font_style, enter weather you want normal text (leave empty), italics or bold (enter just the word italic or bold). In font_type, enter the font type. You can choose from Courier, Helvetica, or Times. In text_colour, enter the colour of the text (e.g. black or red).
+
+I am working on making the text editor look nicer, and some extra features.
 
 Christopher's Text Editor.exe is the application version of the code. It only works on Windows 10.
 
