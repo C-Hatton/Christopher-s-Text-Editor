@@ -18,7 +18,7 @@ def f_main():
 
     #START:
     root = tk.Tk()
-                                                                          #Changes icon
+                                                                           
     root.state('zoomed')                                                                                  #Sets default state to zoomed
     root.bind('<F11>', lambda event: root.attributes('-fullscreen',not root.attributes('-fullscreen')))   #Binds F11 to fullscreen
     root.bind('<Escape>', lambda event: root.attributes('-fullscreen', False))                            #Binds Escape to leave fullscreen
@@ -30,7 +30,7 @@ def f_main():
     file_open = [False] 
     file_open_name = ['']
     file_types_name = 'Text files'
-    file_types = 'txt,py,html,htm'
+    file_types = 'txt'
 
     def f_open_file(): #Open files:
         file_location = ''
@@ -166,7 +166,8 @@ def f_main():
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
     
-    def f_replace_text(original_text,replace_text): #
+    def f_replace_text(original_text,replace_text): #Replaces text
+
         x = textbox.get("1.0",'end-1c')
         y = x.replace(original_text, replace_text)
         textbox.delete("1.0","end")
@@ -178,7 +179,12 @@ def f_main():
             original_text = original.get() #Gets inputs
             replace_text = replace.get()
             f_replace_text(original_text,replace_text)
-            time.sleep(0.5)
+            popup.destroy()
+
+        def f_submit_key(event):
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
             popup.destroy()
 
         popup = Toplevel(root) #Creates a popup
@@ -192,7 +198,8 @@ def f_main():
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
         replace.grid(row = 1,column = 2)
-        submit.grid(row = 2,column = 1)
+        submit.grid(row = 2,column = 1,pady = 3)
+        popup.bind('<Return>',f_submit_key)
 
     def f_replace_key(event): #Replace text
 
@@ -203,6 +210,12 @@ def f_main():
             time.sleep(0.5)
             popup.destroy()
 
+        def f_submit_key(event):
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
+            popup.destroy()
+
         popup = Toplevel(root) #Creates a popup
         popup.title('Replace Text - ' + name)
         original_label = Label(popup, text = 'What do you want to replace?')
@@ -214,7 +227,8 @@ def f_main():
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
         replace.grid(row = 1,column = 2)
-        submit.grid(row = 2,column = 1)
+        submit.grid(row = 2,column = 1,pady = 3)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_style(): #Changes font style of textbox
 
@@ -224,18 +238,7 @@ def f_main():
             time.sleep(0.5)
             popup.destroy()
 
-        popup = Toplevel(root) #Creates a popup
-        popup.title('Change Text Style - ' + name)
-        text_style_label = Label(popup, text = 'Enter text style here:')
-        text_style_entry = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
-        text_style_label.grid(row = 0,column = 0)
-        text_style_entry.grid(row = 1,column = 0,padx = 5)
-        submit.grid(row = 2,column = 0)
-
-    def f_change_text_style_key(event): #Changes font style of textbox
-
-        def f_submit():
+        def f_submit_key(event):
             text_style = text_style_entry.get()     
             textbox.configure(font=(text_style))
             time.sleep(0.5)
@@ -249,6 +252,31 @@ def f_main():
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
+
+    def f_change_text_style_key(event): #Changes font style of textbox
+
+        def f_submit():
+            text_style = text_style_entry.get()     
+            textbox.configure(font=(text_style))
+            time.sleep(0.5)
+            popup.destroy()
+
+        def f_submit_key(event):
+            text_style = text_style_entry.get()     
+            textbox.configure(font=(text_style))
+            time.sleep(0.5)
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        text_style_label = Label(popup, text = 'Enter text style here:')
+        text_style_entry = Entry(popup)
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        text_style_label.grid(row = 0,column = 0)
+        text_style_entry.grid(row = 1,column = 0,padx = 5)
+        submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour():
 
@@ -259,6 +287,13 @@ def f_main():
             time.sleep(0.5)
             popup.destroy()
 
+        def f_submit_key(event):
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            time.sleep(0.5)
+            popup.destroy()
+
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
         text_colour_label = Label(popup, text = 'Enter text colour here:')
@@ -267,6 +302,7 @@ def f_main():
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour_key(event):
 
@@ -274,7 +310,14 @@ def f_main():
             
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
+            popup.destroy()
+
+        def f_submit_key(event):
             
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            popup.destroy()
+
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
         text_colour_label = Label(popup, text = 'Enter text colour here:')
@@ -283,6 +326,7 @@ def f_main():
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_help():
         os.system("start \"\" http:\\christopher-hatton.co.uk")
