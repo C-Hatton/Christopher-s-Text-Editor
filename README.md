@@ -14,15 +14,17 @@ You can press ctrl + s to save.
 
 You can press ctrl + o to open.
 
-You can use ctrl + h to replace certain text.
+You can press ctrl + h to replace certain text.
 
-You can use ctrl + f to change the font style in the textbox.*
+You can press ctrl + f to change the font style in the textbox.*
+
+You can press ctrl + b to change the font colour.
 
 Ctrl + c and ctrl + v work just as normal to copy and paste.
 
 
 
-I am working on making the text editor look nicer, and the ability to close the window by pressinf F9.
+I am working on making the text editor look nicer, and the ability to close the window by pressing F9.
 
 Christopher's Text Editor.exe is the application version of the code. It only works on Windows 10.
 
