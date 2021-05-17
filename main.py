@@ -31,7 +31,7 @@ def f_main():
     file_open = [False] 
     file_open_name = ['']
     file_types_name = 'Text files'
-    file_types = 'txt,py,html,htm'
+    file_types = 'txt'
     f = open('font_size.txt','r')
     font_size = f.read()
     f.close()
@@ -500,7 +500,10 @@ def f_main():
             
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
-            if colour != '':
+            popup.destroy()
+            if not colour:
+                raise SystemExit
+            else:
                 f = open('text_colour.txt','w')
                 f.write(colour)
                 f.close()
@@ -509,11 +512,13 @@ def f_main():
             
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
-            if colour != '':
+            popup.destroy()
+            if not colour:
+                raise SystemExit
+            else:
                 f = open('text_colour.txt','w')
                 f.write(colour)
                 f.close()
-
 
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
