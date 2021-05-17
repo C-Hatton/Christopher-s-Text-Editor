@@ -180,7 +180,8 @@ def f_main():
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
     
-    def f_replace_text(original_text,replace_text): #
+    def f_replace_text(original_text,replace_text): #Replaces text
+
         x = textbox.get("1.0",'end-1c')
         y = x.replace(original_text, replace_text)
         textbox.delete("1.0","end")
@@ -192,7 +193,12 @@ def f_main():
             original_text = original.get() #Gets inputs
             replace_text = replace.get()
             f_replace_text(original_text,replace_text)
-            time.sleep(0.5)
+            popup.destroy()
+
+        def f_submit_key(event):
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
             popup.destroy()
 
         popup = Toplevel(root) #Creates a popup
@@ -206,7 +212,8 @@ def f_main():
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
         replace.grid(row = 1,column = 2)
-        submit.grid(row = 2,column = 1)
+        submit.grid(row = 2,column = 1,pady = 3)
+        popup.bind('<Return>',f_submit_key)
 
     def f_replace_key(event): #Replace text
 
@@ -217,6 +224,12 @@ def f_main():
             time.sleep(0.5)
             popup.destroy()
 
+        def f_submit_key(event):
+            original_text = original.get() #Gets inputs
+            replace_text = replace.get()
+            f_replace_text(original_text,replace_text)
+            popup.destroy()
+
         popup = Toplevel(root) #Creates a popup
         popup.title('Replace Text - ' + name)
         original_label = Label(popup, text = 'What do you want to replace?')
@@ -228,11 +241,59 @@ def f_main():
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
         replace.grid(row = 1,column = 2)
-        submit.grid(row = 2,column = 1)
+        submit.grid(row = 2,column = 1,pady = 3)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_style(): #Changes font style of textbox
 
         def f_submit():
+            text_style = text_style_entry.get()     
+            textbox.configure(font=(text_style))
+            time.sleep(0.5)
+            popup.destroy()
+            if text_style.split()[0] == 'Courier' or text_style.split()[0] == 'Helvetica' or text_style.split()[0] == 'Times':
+                f = open('font_type.txt','w')
+                f.write(text_style.split()[0])
+                f.close()
+            f = open('font_size.txt','r')
+            x = f.read()
+            f.close()
+            z = 0
+            f = open('font_size.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[1])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_size.txt','w')
+                f.write(text_style.split()[1])
+                f.close()
+                z = z - 1
+            f = open('font_size.txt','r')
+            y = f.read()
+            f.close()
+            f = open('font_style.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[2])
+                except IndexError:
+                    break
+                else:
+                    z = z + 1
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_style.txt','w')
+                f.write(text_style.split()[2])
+                f.close()
+                z = z - 1
+
+        def f_submit_key(event):
             text_style = text_style_entry.get()     
             textbox.configure(font=(text_style))
             time.sleep(0.5)
@@ -287,10 +348,58 @@ def f_main():
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_style_key(event): #Changes font style of textbox
 
         def f_submit():
+            text_style = text_style_entry.get()     
+            textbox.configure(font=(text_style))
+            time.sleep(0.5)
+            popup.destroy()
+            if text_style.split()[0] == 'Courier' or text_style.split()[0] == 'Helvetica' or text_style.split()[0] == 'Times':
+                f = open('font_type.txt','w')
+                f.write(text_style.split()[0])
+                f.close()
+            f = open('font_size.txt','r')
+            x = f.read()
+            f.close()
+            z = 0
+            f = open('font_size.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[1])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_size.txt','w')
+                f.write(x)
+                f.close()
+                z = z - 1
+            f = open('font_style.txt','r')
+            y = f.read()
+            f.close()
+            f = open('font_style.txt','w')
+            while True:
+                try:
+                    f.write(text_style.split()[2])
+                except IndexError:
+                    z = z + 1
+                    break
+                else:
+                    break
+            f.close()
+            if z == 1:
+                f = open('font_style.txt','w')
+                f.write(y)
+                f.close()
+                z = z - 1
+
+        def f_submit_key(event):
             text_style = text_style_entry.get()     
             textbox.configure(font=(text_style))
             time.sleep(0.5)
@@ -345,10 +454,24 @@ def f_main():
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour():
 
         def f_submit():
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            time.sleep(0.5)
+            popup.destroy()
+            if not colour:
+                raise SystemExit
+            else:
+                f = open('text_colour.txt','w')
+                f.write(colour)
+                f.close()
+
+        def f_submit_key(event):
             
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
@@ -369,6 +492,7 @@ def f_main():
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_change_text_colour_key(event):
 
@@ -381,6 +505,16 @@ def f_main():
                 f.write(colour)
                 f.close()
 
+        def f_submit_key(event):
+            
+            colour = text_colour_entry.get()
+            textbox.configure(fg = colour)
+            if colour != '':
+                f = open('text_colour.txt','w')
+                f.write(colour)
+                f.close()
+
+
         popup = Toplevel(root) #Creates a popup
         popup.title('Change Text Style - ' + name)
         text_colour_label = Label(popup, text = 'Enter text colour here:')
@@ -389,6 +523,7 @@ def f_main():
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0)
+        popup.bind('<Return>',f_submit_key)
 
     def f_help():
         os.system("start \"\" http:\\christopher-hatton.co.uk")
