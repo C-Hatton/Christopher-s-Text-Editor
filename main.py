@@ -10,8 +10,8 @@ from sys import platform         #to make sure that the os is win32
 import ctypes                    #to make sure that the screen size is large enough
 import time                      #to make better timings
 import os                        #to allow help button open help web page
-import importlib
-
+import importlib                 #to open custom theme
+ 
 name = "Christopher's Text Editor"
 
 def f_main():
