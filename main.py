@@ -10,15 +10,21 @@ from sys import platform         #to make sure that the os is win32
 import ctypes                    #to make sure that the screen size is large enough
 import time                      #to make better timings
 import os                        #to allow help button open help web page
-
+import importlib
 
 name = "Christopher's Text Editor"
 
 def f_main():
 
+    f = open('theme.txt','r')
+    theme = f.read()
+    f.close()
+
+    f_theme = importlib.import_module(theme)
+
     #START:
     root = tk.Tk()
-                            
+                           
     root.iconphoto(True, tk.PhotoImage(file='logo.ico'))                                                  #Changes icon
     root.state('zoomed')                                                                                  #Sets default state to zoomed
     root.bind('<F11>', lambda event: root.attributes('-fullscreen',not root.attributes('-fullscreen')))   #Binds F11 to fullscreen
@@ -28,27 +34,14 @@ def f_main():
 
     #Make global variables:
     file_location_save = ['']
-    file_open = [False] 
+    file_open = [False]
     file_open_name = ['']
-    file_types_name = 'Text files'
-    file_types = 'txt'
-    f = open('font_size.txt','r')
-    font_size = f.read()
-    f.close()
-    f = open('font_type.txt','r')
-    font_type = f.read()
-    f.close()
-    f = open('font_style.txt','r')
-    font_style = f.read()
-    f.close()
+    font_size,font_style,font_type,text_colour,button_fg,button_bg,heading_fg,heading_bg,text_box_colour = f_theme.f_themes()
     font_style_all = font_type + ' ' + font_size + ' ' + font_style
-    f = open('text_colour.txt','r')
-    text_colour = f.read()
-    f.close()
 
     def f_open_file(): #Open files:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file location (local variable)
+        file_location = filedialog.askopenfilename() #Gets the file location (local variable)
         file_location_save[0] = file_location #Puts the file location in it's global variable
         while True:
             try:
@@ -69,7 +62,7 @@ def f_main():
 
     def f_open_file_key(event): #Open files:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file location (local variable)
+        file_location = filedialog.askopenfilename() #Gets the file location (local variable)
         file_location_save[0] = file_location #Puts the file location in it's global variable
         while True:
             try:
@@ -98,11 +91,11 @@ def f_main():
         else:
             #If no files been opened:
             file_location = ''
-            file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+            file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
             file_location_save[0] = file_location  #Puts the file location in it's global variable
             while True:
                 try:
-                    f = open(file_location,'w') 
+                    f = open(file_location,'w')
                 except FileNotFoundError:
                     break
                 else:
@@ -125,11 +118,11 @@ def f_main():
             else:
                 #If no files been opened:
                 file_location = ''
-                file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+                file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
                 file_location_save[0] = file_location  #Puts the file location in it's global variable
                 while True:
                     try:
-                        f = open(file_location,'w') 
+                        f = open(file_location,'w')
                     except FileNotFoundError:
                         break
                     else:
@@ -144,11 +137,11 @@ def f_main():
 
     def f_save_as(): #Save file as:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
         file_location_save[0] = file_location  #Puts the file location in it's gloval variable
         while True:
             try:
-                f = open(file_location,'w') 
+                f = open(file_location,'w')
             except FileNotFoundError:
                 break
             else:
@@ -163,11 +156,11 @@ def f_main():
 
     def f_save_as_key(event): #Save file as:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
         file_location_save[0] = file_location  #Puts the file location in it's gloval variable
         while True:
             try:
-                f = open(file_location,'w') 
+                f = open(file_location,'w')
             except FileNotFoundError:
                 break
             else:
@@ -179,7 +172,7 @@ def f_main():
                 file_open_name[0] = x[-1] #Puts it in a global variable
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
-    
+   
     def f_replace_text(original_text,replace_text): #Replaces text
 
         x = textbox.get("1.0",'end-1c')
@@ -207,7 +200,7 @@ def f_main():
         replace_label = Label(popup,text = 'What do you want to replace it with?')
         original = Entry(popup)
         replace = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         original_label.grid(row = 0,column = 0)
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
@@ -236,7 +229,7 @@ def f_main():
         replace_label = Label(popup,text = 'What do you want to replace it with?')
         original = Entry(popup)
         replace = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         original_label.grid(row = 0,column = 0)
         replace_label.grid(row = 0,column = 2)
         original.grid(row = 1,column = 0)
@@ -247,7 +240,7 @@ def f_main():
     def f_change_text_style(): #Changes font style of textbox
 
         def f_submit():
-            text_style = text_style_entry.get()     
+            text_style = text_style_entry.get()    
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
@@ -294,7 +287,7 @@ def f_main():
                 z = z - 1
 
         def f_submit_key(event):
-            text_style = text_style_entry.get()     
+            text_style = text_style_entry.get()    
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
@@ -344,7 +337,7 @@ def f_main():
         popup.title('Change Text Style - ' + name)
         text_style_label = Label(popup, text = 'Enter text style here:')
         text_style_entry = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0,pady = 3)
@@ -353,7 +346,7 @@ def f_main():
     def f_change_text_style_key(event): #Changes font style of textbox
 
         def f_submit():
-            text_style = text_style_entry.get()     
+            text_style = text_style_entry.get()    
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
@@ -400,7 +393,7 @@ def f_main():
                 z = z - 1
 
         def f_submit_key(event):
-            text_style = text_style_entry.get()     
+            text_style = text_style_entry.get()    
             textbox.configure(font=(text_style))
             time.sleep(0.5)
             popup.destroy()
@@ -450,7 +443,7 @@ def f_main():
         popup.title('Change Text Style - ' + name)
         text_style_label = Label(popup, text = 'Enter text style here:')
         text_style_entry = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         text_style_label.grid(row = 0,column = 0)
         text_style_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0,pady = 3)
@@ -459,7 +452,7 @@ def f_main():
     def f_change_text_colour():
 
         def f_submit():
-            
+           
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
             time.sleep(0.5)
@@ -472,7 +465,7 @@ def f_main():
                 f.close()
 
         def f_submit_key(event):
-            
+           
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
             time.sleep(0.5)
@@ -488,7 +481,7 @@ def f_main():
         popup.title('Change Text Style - ' + name)
         text_colour_label = Label(popup, text = 'Enter text colour here:')
         text_colour_entry = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0,pady = 3)
@@ -497,7 +490,7 @@ def f_main():
     def f_change_text_colour_key(event):
 
         def f_submit():
-            
+           
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
             popup.destroy()
@@ -509,7 +502,7 @@ def f_main():
                 f.close()
 
         def f_submit_key(event):
-            
+           
             colour = text_colour_entry.get()
             textbox.configure(fg = colour)
             popup.destroy()
@@ -524,11 +517,69 @@ def f_main():
         popup.title('Change Text Style - ' + name)
         text_colour_label = Label(popup, text = 'Enter text colour here:')
         text_colour_entry = Entry(popup)
-        submit = Button(popup,text = 'Submit',command = f_submit,bg = 'gray',fg = 'white')
+        submit = Button(popup,text = 'Submit',command = f_submit,bg = button_bg,fg = button_fg)
         text_colour_label.grid(row = 0,column = 0)
         text_colour_entry.grid(row = 1,column = 0,padx = 5)
         submit.grid(row = 2,column = 0,pady = 3)
         popup.bind('<Return>',f_submit_key)
+   
+    def f_themes(): #Set themes
+
+        def f_get_themes():
+            os.system('start \"\" https://github.com/C-Hatton/Christopher-s-Text-Editor')
+            popup.destroy()
+
+        def f_open_themes():
+            file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
+            x = file_location.split('/') #Gets the name of the file(local variable)
+            if not x:
+                raise SystemExit
+            else:
+                y = (x[-1].split('.'))[0]
+                f = open('theme.txt','w')
+                f.write(y)
+                f.close()
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        label_1 = Label(popup,text = 'Download themes here:')
+        label_1.grid(row = 0,column = 0,pady = 3,padx = 3)
+        button_1 = Button(popup,text = 'Link to themes',command = f_get_themes,bg = button_bg,fg = button_fg)
+        button_1.grid(row = 1,column = 0,pady = 3,padx = 3)
+        label_2 = Label(popup,text = 'Choose theme:')
+        label_2.grid(row = 2,column = 0,pady = 3,padx = 3)
+        button_2 = Button(popup,text = 'Choose theme',command = f_open_themes,bg = button_bg,fg = button_fg)
+        button_2.grid(row = 3,column = 0,pady = 3,padx = 3)
+
+    def f_themes_key(event): #Set themes
+
+        def f_get_themes():
+            os.system('start \"\" https://github.com/C-Hatton/Christopher-s-Text-Editor')
+            popup.destroy()
+
+        def f_open_themes():
+            file_location = filedialog.askopenfilename() #Gets the file to save to (local variable)
+            x = file_location.split('/') #Gets the name of the file(local variable)
+            if not x:
+                raise SystemExit
+            else:
+                y = (x[-1].split('.'))[0]
+                f = open('theme.txt','w')
+                f.write(y)
+                f.close()
+            popup.destroy()
+
+        popup = Toplevel(root) #Creates a popup
+        popup.title('Change Text Style - ' + name)
+        label_1 = Label(popup,text = 'Download themes here:')
+        label_1.grid(row = 0,column = 0,pady = 3,padx = 3)
+        button_1 = Button(popup,text = 'Link to themes',command = f_get_themes,bg = button_bg,fg = button_fg)
+        button_1.grid(row = 1,column = 0,pady = 3,padx = 3)
+        label_2 = Label(popup,text = 'Choose theme:')
+        label_2.grid(row = 2,column = 0,pady = 3,padx = 3)
+        button_2 = Button(popup,text = 'Choose theme',command = f_open_themes,bg = button_bg,fg = button_fg)
+        button_2.grid(row = 3,column = 0,pady = 3,padx = 3)
 
     def f_help():
         os.system('start \"\" https://github.com/C-Hatton/Christopher-s-Text-Editor')
@@ -538,31 +589,37 @@ def f_main():
     Grid.columnconfigure(root,index = 0,weight = 1)
 
     #Make Tk:
-    heading = Label(root,text = name,font = 'Helvetica 25 bold')
-    textbox = scrolledtext.ScrolledText(width=40, height=10)
-    frame_buttons = tk.Frame(root)
-    open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = 'gray',fg = 'white')
-    open_file.pack(side=tk.LEFT,padx=(3),pady=(3))
-    save_file = Button(frame_buttons,text = 'Save',command=lambda : f_save_file(),bg = 'gray',fg = 'white')
-    save_file.pack(side=tk.LEFT,padx=(3),pady=(3))
-    save_as = Button(frame_buttons,text = 'Save As',command=lambda : f_save_as(),bg = 'gray',fg = 'white')
-    save_as.pack(side=tk.LEFT,padx=(3),pady=(3))
-    replace_button = Button(frame_buttons,text = 'Replace Text',command=lambda : f_replace(),bg = 'gray',fg = 'white')
-    replace_button.pack(side=tk.LEFT,padx=(3),pady=(3))
-    change_text_style = Button(frame_buttons,text = 'Change Text Style',command=lambda : f_change_text_style(),bg = 'gray',fg = 'white')
-    change_text_style.pack(side=tk.LEFT,padx=(3),pady=(3))
-    change_text_colour = Button(frame_buttons,text = 'Change Text Colour',command=lambda : f_change_text_colour(),bg = 'gray',fg = 'white')
-    change_text_colour.pack(side=tk.LEFT,padx=(3),pady=(3))
-    help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
-    help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
-    copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk')
+    heading = Label(root,text = name,font = 'Helvetica 25 bold',bg = heading_bg,fg = heading_fg)
+    textbox = scrolledtext.ScrolledText(width=40, height=10,bg = text_box_colour)
+    frame_buttons = tk.Frame(root,bg = heading_bg)
+    br1 = Button(frame_buttons,bg = heading_bg,borderwidth=0)
+    br1.pack(side=tk.LEFT,padx=(3),pady=(3),expand=YES)
+    open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = button_bg,fg = button_fg)
+    open_file.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    save_file = Button(frame_buttons,text = 'Save',command=lambda : f_save_file(),bg = button_bg,fg = button_fg)
+    save_file.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    save_as = Button(frame_buttons,text = 'Save As',command=lambda : f_save_as(),bg = button_bg,fg = button_fg)
+    save_as.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    replace_button = Button(frame_buttons,text = 'Replace Text',command=lambda : f_replace(),bg = button_bg,fg = button_fg)
+    replace_button.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    change_text_style = Button(frame_buttons,text = 'Change Text Style',command=lambda : f_change_text_style(),bg = button_bg,fg = button_fg)
+    change_text_style.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    change_text_colour = Button(frame_buttons,text = 'Change Text Colour',command=lambda : f_change_text_colour(),bg = button_bg,fg = button_fg)
+    change_text_colour.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    themes = Button(frame_buttons,text = 'Themes',command=lambda : f_themes(),bg = button_bg,fg = button_fg)
+    themes.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = button_bg,fg = button_fg)
+    help_button.pack(side=tk.LEFT,padx=(3),pady=(3),expand=NO)
+    br2 = Button(frame_buttons,bg = heading_bg,borderwidth=0)
+    br2.pack(side=tk.LEFT,padx=(3),pady=(3),expand=YES)
+    copyright = Label(root,text = '© 2021 - Christopher Hatton (558) - Christopher@Christopher-Hatton.co.uk',bg = heading_bg,fg = heading_fg)
 
     #Configure textbox:
     textbox.configure(font = font_style_all,fg = text_colour)
 
     #Arrange Tk:
     heading.grid(row = 0,column = 0,sticky = 'nsew')
-    frame_buttons.grid(row = 1,column = 0)
+    frame_buttons.grid(row = 1,column = 0,sticky = 'nsew')
     textbox.grid(row = 2,column = 0,sticky = 'nsew')
     copyright.grid(row = 3,column = 0,sticky = 'nsew')
 
@@ -573,6 +630,7 @@ def f_main():
     root.bind('<Control-h>', f_replace_key)
     root.bind('<Control-f>', f_change_text_style_key)
     root.bind('<Control-b>', f_change_text_colour_key)
+    root.bind('<Control-t>', f_themes_key)
 
     root.mainloop()
      
