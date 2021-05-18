@@ -538,7 +538,7 @@ def f_main():
     Grid.columnconfigure(root,index = 0,weight = 1)
 
     #Make Tk:
-    heading = Label(root,text = name,font = 'Helvetica 30 bold')
+    heading = Label(root,text = name,font = 'Helvetica 25 bold')
     textbox = scrolledtext.ScrolledText(width=40, height=10)
     frame_buttons = tk.Frame(root)
     open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = 'gray',fg = 'white')
