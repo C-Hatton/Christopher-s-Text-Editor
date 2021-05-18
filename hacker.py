@@ -1,7 +1,7 @@
 def f_themes():
     font_size = '20'
     font_style = ''
-    font_type = 'Helvetica'
+    font_type = 'Times'
     text_colour = 'lime'
     button_fg = 'lime'
     button_bg = 'black'
