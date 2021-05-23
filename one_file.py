@@ -32,9 +32,80 @@ def f_main():
     file_types_name = 'Text files'
     file_types = 'txt'
 
+
+    #Textbox class:
+    class TextLineNumbers(tk.Canvas):
+        def __init__(self, *args, **kwargs):
+            tk.Canvas.__init__(self, *args, **kwargs)
+            self.textwidget = None
+
+        def attach(self, text_widget):
+            self.textwidget = text_widget
+            
+        def redraw(self, *args):
+            '''redraw line numbers'''
+            self.delete("all")
+
+            i = self.textwidget.index("@0,0")
+            while True :
+                dline= self.textwidget.dlineinfo(i)
+                if dline is None: break
+                y = dline[1]
+                linenum = str(i).split(".")[0]
+                self.create_text(2,y,anchor="nw", text=linenum)
+                i = self.textwidget.index("%s+1line" % i)
+
+    class CustomText(tk.Text):
+        def __init__(self, *args, **kwargs):
+            tk.Text.__init__(self, *args, **kwargs)
+
+            # create a proxy for the underlying widget
+            self._orig = self._w + "_orig"
+            self.tk.call("rename", self._w, self._orig)
+            self.tk.createcommand(self._w, self._proxy)
+
+        def _proxy(self, *args):
+            # let the actual widget perform the requested action
+            cmd = (self._orig,) + args
+            result = self.tk.call(cmd)
+
+            # generate an event if something was added or deleted,
+            # or the cursor position changed
+            if (args[0] in ("insert", "replace", "delete") or 
+                args[0:3] == ("mark", "set", "insert") or
+                args[0:2] == ("xview", "moveto") or
+                args[0:2] == ("xview", "scroll") or
+                args[0:2] == ("yview", "moveto") or
+                args[0:2] == ("yview", "scroll")
+            ):
+                self.event_generate("<<Change>>", when="tail")
+
+            # return what the actual widget returned
+            return result        
+
+    class all_together(tk.Frame):
+        def __init__(self, *args, **kwargs):
+            tk.Frame.__init__(self, *args, **kwargs)
+            self.text = CustomText(self)
+            self.vsb = tk.Scrollbar(self, orient="vertical", command=self.text.yview)
+            self.text.configure(yscrollcommand=self.vsb.set)
+            self.text.configure(font=('Times 20'))
+            self.linenumbers = TextLineNumbers(self, width=30)
+            self.linenumbers.attach(self.text)
+
+            self.vsb.pack(side="right", fill="y")
+            self.linenumbers.pack(side="left", fill="y")
+            self.text.pack(side="right", fill="both", expand=True)
+
+            self.text.bind("<<Change>>", self._on_change)
+            self.text.bind("<Configure>", self._on_change)
+
+        def _on_change(self, event):
+            self.linenumbers.redraw()
+
     def f_open_file(): #Open files:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file location (local variable)
+        file_location = filedialog.askopenfilename() #Gets the file location (local variable)
         file_location_save[0] = file_location #Puts the file location in it's global variable
         while True:
             try:
@@ -44,8 +115,8 @@ def f_main():
             else:
                 contents = f.read() #Reads the file
                 f.close() #Closes the file
-                textbox.delete("1.0","end")
-                textbox.insert("end-1c",contents) #Puts the contents of the file in the textbox
+                textbox.text.delete("1.0","end")
+                textbox.text.insert("end-1c",contents) #Puts the contents of the file in the textbox
                 x = []
                 x = file_location.split('/') #Gets the name of the file(local variable)
                 file_open_name[0] = x[-1] #Puts the file name in it's global variable
@@ -65,8 +136,8 @@ def f_main():
             else:
                 contents = f.read() #Reads the file
                 f.close() #Closes the file
-                textbox.delete("1.0","end")
-                textbox.insert("end-1c",contents) #Puts the contents of the file in the textbox
+                textbox.text.delete("1.0","end")
+                textbox.text.insert("end-1c",contents) #Puts the contents of the file in the textbox
                 x = []
                 x = file_location.split('/') #Gets the name of the file(local variable)
                 file_open_name[0] = x[-1] #Puts the file name in it's global variable
@@ -79,7 +150,7 @@ def f_main():
             #If one or more file has beened opened:
             x = file_location_save[0]
             f = open(x,'w')
-            f.write(textbox.get("1.0",'end-1c')) #Saves file to the opened file
+            f.write(textbox.text.get("1.0",'end-1c')) #Saves file to the opened file
             f.close()
         else:
             #If no files been opened:
@@ -92,7 +163,7 @@ def f_main():
                 except FileNotFoundError:
                     break
                 else:
-                    f.write(textbox.get("1.0",'end-1c')) #Saves the file
+                    f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
                     f.close()
                     file_open[0] = True #File has been opened
                     x = []
@@ -106,7 +177,7 @@ def f_main():
                 #If one or more file has beened opened:
                 x = file_location_save[0]
                 f = open(x,'w')
-                f.write(textbox.get("1.0",'end-1c')) #Saves file to the opened file
+                f.write(textbox.text.get("1.0",'end-1c')) #Saves file to the opened file
                 f.close()
             else:
                 #If no files been opened:
@@ -119,7 +190,7 @@ def f_main():
                     except FileNotFoundError:
                         break
                     else:
-                        f.write(textbox.get("1.0",'end-1c')) #Saves the file
+                        f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
                         f.close()
                         file_open[0] = True #File has been opened
                         x = []
@@ -138,7 +209,7 @@ def f_main():
             except FileNotFoundError:
                 break
             else:
-                f.write(textbox.get("1.0",'end-1c')) #Saves the file
+                f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
                 f.close()
                 file_open[0] = True #File has been opened
                 x = []
@@ -157,7 +228,7 @@ def f_main():
             except FileNotFoundError:
                 break
             else:
-                f.write(textbox.get("1.0",'end-1c')) #Saves the file
+                f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
                 f.close()
                 file_open[0] = True #File has been opened
                 x = []
@@ -168,10 +239,10 @@ def f_main():
     
     def f_replace_text(original_text,replace_text): #Replaces text
 
-        x = textbox.get("1.0",'end-1c')
+        x = textbox.text.get("1.0",'end-1c')
         y = x.replace(original_text, replace_text)
-        textbox.delete("1.0","end")
-        textbox.insert("end-1c",y) #Puts the contents of the file in the textbox
+        textbox.text.delete("1.0","end")
+        textbox.text.insert("end-1c",y) #Puts the contents of the file in the textbox
 
     def f_replace(): #Replace text
 
@@ -234,13 +305,13 @@ def f_main():
 
         def f_submit():
             text_style = text_style_entry.get()     
-            textbox.configure(font=(text_style))
+            textbox.text.configure(font=text_style)
             time.sleep(0.5)
             popup.destroy()
 
         def f_submit_key(event):
             text_style = text_style_entry.get()     
-            textbox.configure(font=(text_style))
+            textbox.text.configure(font=text_style)
             time.sleep(0.5)
             popup.destroy()
 
@@ -258,13 +329,13 @@ def f_main():
 
         def f_submit():
             text_style = text_style_entry.get()     
-            textbox.configure(font=(text_style))
+            textbox.text.configure(font=text_style)
             time.sleep(0.5)
             popup.destroy()
 
         def f_submit_key(event):
             text_style = text_style_entry.get()     
-            textbox.configure(font=(text_style))
+            textbox.text.configure(font=text_style)
             time.sleep(0.5)
             popup.destroy()
 
@@ -283,14 +354,14 @@ def f_main():
         def f_submit():
             
             colour = text_colour_entry.get()
-            textbox.configure(fg = colour)
+            textbox.text.configure(fg = colour)
             time.sleep(0.5)
             popup.destroy()
 
         def f_submit_key(event):
             
             colour = text_colour_entry.get()
-            textbox.configure(fg = colour)
+            textbox.text.configure(fg = colour)
             time.sleep(0.5)
             popup.destroy()
 
@@ -309,13 +380,13 @@ def f_main():
         def f_submit():
             
             colour = text_colour_entry.get()
-            textbox.configure(fg = colour)
+            textbox.text.configure(fg = colour)
             popup.destroy()
 
         def f_submit_key(event):
             
             colour = text_colour_entry.get()
-            textbox.configure(fg = colour)
+            textbox.text.configure(fg = colour)
             popup.destroy()
 
         popup = Toplevel(root) #Creates a popup
@@ -336,8 +407,8 @@ def f_main():
     Grid.columnconfigure(root,index = 0,weight = 1)
 
     #Make Tk:
-    heading = Label(root,text = name,font = 'Helvetica 25 bold')
-    textbox = scrolledtext.ScrolledText(width=40, height=10)
+    heading = Label(root,text = name,font = 'Helvetica 30 bold')
+    textbox = all_together(root)
     frame_buttons = tk.Frame(root)
     open_file = Button(frame_buttons,text = 'Open',command = f_open_file,bg = 'gray',fg = 'white')
     open_file.pack(side=tk.LEFT,padx=(3),pady=(3))
