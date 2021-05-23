@@ -4,7 +4,6 @@
 
 from tkinter import *            #for Tk window
 import tkinter as tk             #to make Frame
-from tkinter import scrolledtext #to create textbox
 from tkinter import filedialog   #to open and choose documents
 from sys import platform         #to make sure that the os is win32
 import ctypes                    #to make sure that the screen size is large enough
