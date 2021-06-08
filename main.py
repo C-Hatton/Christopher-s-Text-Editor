@@ -156,7 +156,7 @@ def f_main():
                 break
 
     def f_save_file(): #Save files:
-        if file_open[0] == 'True':
+        if file_open[0] == True:
             #If one or more file has beened opened:
             x = file_location_save[0]
             f = open(x,'w')
@@ -180,10 +180,11 @@ def f_main():
                     x = file_location.split('/') #Gets the name of the file(local variable)
                     file_open_name[0] = x[-1] #Puts it in a global variable
                     root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
+                    file_open[0] = True
                     break
 
     def f_save_file_key(event): #Save files:
-            if file_open[0] == 'True':
+            if file_open[0] == True:
                 #If one or more file has beened opened:
                 x = file_location_save[0]
                 f = open(x,'w')
@@ -207,6 +208,7 @@ def f_main():
                         x = file_location.split('/') #Gets the name of the file(local variable)
                         file_open_name[0] = x[-1] #Puts it in a global variable
                         root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
+                        file_open[0] = True
                         break
 
     def f_save_as(): #Save file as:
