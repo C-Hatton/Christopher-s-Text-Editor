@@ -118,7 +118,7 @@ def f_main():
                 x = []
                 x = file_location.split('/') #Gets the name of the file(local variable)
                 file_open_name[0] = x[-1] #Puts the file name in it's global variable
-                file_open[0] = 'True' #File has been opened (useful)
+                file_open[0] = True #File has been opened (useful)
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
 
@@ -139,7 +139,7 @@ def f_main():
                 x = []
                 x = file_location.split('/') #Gets the name of the file(local variable)
                 file_open_name[0] = x[-1] #Puts the file name in it's global variable
-                file_open[0] = 'True' #File has been opened (useful)
+                file_open[0] = True #File has been opened (useful)
                 root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
                 break
 
@@ -152,24 +152,8 @@ def f_main():
             f.close()
         else:
             #If no files been opened:
-            file_location = ''
-            file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
-            file_location_save[0] = file_location  #Puts the file location in it's global variable
-            while True:
-                try:
-                    f = open(file_location,'w') 
-                except FileNotFoundError:
-                    break
-                else:
-                    f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
-                    f.close()
-                    file_open[0] = True #File has been opened
-                    x = []
-                    x = file_location.split('/') #Gets the name of the file(local variable)
-                    file_open_name[0] = x[-1] #Puts it in a global variable
-                    root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
-                    file_open[0] = True
-                    break
+            print(file_open)
+            f_save_as()
 
     def f_save_file_key(event): #Save files:
             if file_open[0] == True:
@@ -179,63 +163,37 @@ def f_main():
                 f.write(textbox.text.get("1.0",'end-1c')) #Saves file to the opened file
                 f.close()
             else:
-                #If no files been opened:
-                file_location = ''
-                file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
-                file_location_save[0] = file_location  #Puts the file location in it's global variable
-                while True:
-                    try:
-                        f = open(file_location,'w') 
-                    except FileNotFoundError:
-                        break
-                    else:
-                        f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
-                        f.close()
-                        file_open[0] = True #File has been opened
-                        x = []
-                        x = file_location.split('/') #Gets the name of the file(local variable)
-                        file_open_name[0] = x[-1] #Puts it in a global variable
-                        root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
-                        file_open[0] = True
-                        break
+                f_save_as()
 
     def f_save_as(): #Save file as:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        file_location = filedialog.asksaveasfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        if file_location[-4:] != '.txt':
+            file_location = file_location + '.txt'
         file_location_save[0] = file_location  #Puts the file location in it's gloval variable
-        while True:
-            try:
-                f = open(file_location,'w') 
-            except FileNotFoundError:
-                break
-            else:
-                f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
-                f.close()
-                file_open[0] = True #File has been opened
-                x = []
-                x = file_location.split('/') #Gets the name of the file(local variable)
-                file_open_name[0] = x[-1] #Puts it in a global variable
-                root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
-                break
+        f = open(file_location,'w') 
+        f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
+        f.close()
+        file_open[0] = True #File has been opened
+        x = []
+        x = file_location.split('/') #Gets the name of the file(local variable)
+        file_open_name[0] = x[-1] #Puts it in a global variable
+        root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
 
     def f_save_as_key(event): #Save file as:
         file_location = ''
-        file_location = filedialog.askopenfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        file_location = filedialog.asksaveasfilename(filetypes=((file_types_name,file_types),)) #Gets the file to save to (local variable)
+        if file_location[-4:] != '.txt':
+            file_location = file_location + '.txt'
         file_location_save[0] = file_location  #Puts the file location in it's gloval variable
-        while True:
-            try:
-                f = open(file_location,'w') 
-            except FileNotFoundError:
-                break
-            else:
-                f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
-                f.close()
-                file_open[0] = True #File has been opened
-                x = []
-                x = file_location.split('/') #Gets the name of the file(local variable)
-                file_open_name[0] = x[-1] #Puts it in a global variable
-                root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
-                break
+        f = open(file_location,'w') 
+        f.write(textbox.text.get("1.0",'end-1c')) #Saves the file
+        f.close()
+        file_open[0] = True #File has been opened
+        x = []
+        x = file_location.split('/') #Gets the name of the file(local variable)
+        file_open_name[0] = x[-1] #Puts it in a global variable
+        root.title(file_open_name[0]+' - ' + name) #Puts the name of the file in the window's title
     
     def f_replace_text(original_text,replace_text): #Replaces text
 
@@ -424,7 +382,7 @@ def f_main():
     change_text_colour.pack(side=tk.LEFT,padx=(3),pady=(3))
     help_button = Button(frame_buttons,text = 'Help',command = f_help,bg = 'gray',fg = 'white')
     help_button.pack(side=tk.LEFT,padx=(3),pady=(3))
-    copyright = Label(root,text = '© 2022 - Christopher Hatton - christopher@christopher-hatton.co.uk')
+    copyright = Label(root,text = '© 2023 - Christopher Hatton - christopher@christopher-hatton.co.uk')
 
     #Arrange Tk:
     heading.grid(row = 0,column = 0,sticky = 'nsew')
@@ -444,3 +402,4 @@ def f_main():
 
 if __name__ == "__main__":
     f_main()
+
